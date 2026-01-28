@@ -1,0 +1,100 @@
+mysql> SELECT COUNT(*) AS total_clientes
+    -> FROM tb_cliente;
++----------------+
+| total_clientes |
++----------------+
+|              3 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT SUM(gas_valor_total) AS total_gasto_insumos
+    -> FROM tb_gasto_insumos;
++---------------------+
+| total_gasto_insumos |
++---------------------+
+|             8000.00 |
++---------------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT 
+    ->     MIN(pro_preco) AS menor_preco,
+    ->     MAX(pro_preco) AS maior_preco
+    -> FROM tb_produto;
++-------------+-------------+
+| menor_preco | maior_preco |
++-------------+-------------+
+|       50.00 |      100.00 |
++-------------+-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT AVG(pro_preco) AS preco_medio
+    -> FROM tb_produto;
++-------------+
+| preco_medio |
++-------------+
+|   75.000000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT 
+    ->     v.ven_codigo,
+    ->     v.ven_data,
+    ->     c.cli_nome
+    -> FROM tb_venda v
+    -> JOIN tb_cliente c ON v.ven_cli_codigo = c.cli_codigo
+    -> ORDER BY v.ven_data;
++------------+------------+----------+
+| ven_codigo | ven_data   | cli_nome |
++------------+------------+----------+
+|          1 | 2026-01-25 | Antonio  |
+|          2 | 2026-01-26 | Fernanda |
++------------+------------+----------+
+2 rows in set (0.00 sec)
+
+mysql> SELECT 
+    ->     c.cli_nome,
+    ->     p.pro_nome,
+    ->     iv.it_quantidade,
+    ->     iv.it_valor_total
+    -> FROM tb_itens_vendidos iv
+    -> JOIN tb_produto p ON iv.it_pro_codigo = p.pro_codigo
+    -> JOIN tb_venda v ON iv.it_ven_codigo = v.ven_codigo
+    -> JOIN tb_cliente c ON v.ven_cli_codigo = c.cli_codigo;
++----------+----------+---------------+----------------+
+| cli_nome | pro_nome | it_quantidade | it_valor_total |
++----------+----------+---------------+----------------+
+| Antonio  | Farinha  |            10 |         500.00 |
+| Fernanda | Goma     |             5 |         500.00 |
++----------+----------+---------------+----------------+
+2 rows in set (0.01 sec)
+
+mysql> SELECT 
+    ->     p.pro_nome,
+    ->     SUM(pp.pp_quantidade) AS total_produzido
+    -> FROM tb_producao_produto pp
+    -> JOIN tb_produto p ON pp.pp_pro_codigo = p.pro_codigo
+    -> GROUP BY p.pro_nome
+    -> HAVING SUM(pp.pp_quantidade) > 100;
++----------+-----------------+
+| pro_nome | total_produzido |
++----------+-----------------+
+| Goma     |            5100 |
++----------+-----------------+
+1 row in set (0.01 sec)
+
+mysql> SELECT 
+    ->     p.pro_nome,
+    ->     SUM(pp.pp_quantidade) AS total_produzido
+    -> FROM tb_producao_produto pp
+    -> JOIN tb_produto p ON pp.pp_pro_codigo = p.pro_codigo
+    -> GROUP BY p.pro_nome
+    -> ORDER BY total_produzido DESC;
++----------+-----------------+
+| pro_nome | total_produzido |
++----------+-----------------+
+| Goma     |            5100 |
+| Farinha  |              80 |
++----------+-----------------+
+2 rows in set (0.00 sec)
+
+mysql> notee;
