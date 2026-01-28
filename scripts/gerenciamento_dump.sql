@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.44, for Linux (x86_64)
 --
--- Host: localhost    Database: projeto_db
+-- Host: localhost    Database: gerenciamento
 -- ------------------------------------------------------
 -- Server version	8.0.44
 
@@ -39,6 +39,58 @@ LOCK TABLES `tb_cliente` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tb_gasto_insumos`
+--
+
+DROP TABLE IF EXISTS `tb_gasto_insumos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_gasto_insumos` (
+  `gas_codigo` int NOT NULL AUTO_INCREMENT,
+  `gas_ins_codigo` int NOT NULL,
+  `gas_qtd_insumo` int NOT NULL,
+  `gas_preco_unitario` decimal(10,2) NOT NULL,
+  `gas_data` date NOT NULL,
+  `gas_valor_total` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`gas_codigo`),
+  KEY `fk_gas_ins_codigo` (`gas_ins_codigo`),
+  CONSTRAINT `fk_gas_ins_codigo` FOREIGN KEY (`gas_ins_codigo`) REFERENCES `tb_insumo` (`ins_codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_gasto_insumos`
+--
+
+LOCK TABLES `tb_gasto_insumos` WRITE;
+/*!40000 ALTER TABLE `tb_gasto_insumos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tb_gasto_insumos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tb_insumo`
+--
+
+DROP TABLE IF EXISTS `tb_insumo`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_insumo` (
+  `ins_codigo` int NOT NULL AUTO_INCREMENT,
+  `ins_nome` varchar(50) NOT NULL,
+  PRIMARY KEY (`ins_codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_insumo`
+--
+
+LOCK TABLES `tb_insumo` WRITE;
+/*!40000 ALTER TABLE `tb_insumo` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tb_insumo` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `tb_itens_vendidos`
 --
 
@@ -47,13 +99,13 @@ DROP TABLE IF EXISTS `tb_itens_vendidos`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tb_itens_vendidos` (
   `it_pro_codigo` int NOT NULL,
-  `it_ven_cod` int NOT NULL,
+  `it_ven_codigo` int NOT NULL,
   `it_quantidade` int NOT NULL,
   `it_valor_total` decimal(10,2) NOT NULL,
-  PRIMARY KEY (`it_pro_codigo`,`it_ven_cod`),
-  KEY `it_ven_cod` (`it_ven_cod`),
-  CONSTRAINT `tb_itens_vendidos_ibfk_1` FOREIGN KEY (`it_pro_codigo`) REFERENCES `tb_produto` (`pro_codigo`),
-  CONSTRAINT `tb_itens_vendidos_ibfk_2` FOREIGN KEY (`it_ven_cod`) REFERENCES `tb_venda` (`ven_codigo`)
+  PRIMARY KEY (`it_pro_codigo`,`it_ven_codigo`),
+  KEY `fk_it_ven_cod` (`it_ven_codigo`),
+  CONSTRAINT `fk_it_pro_cod` FOREIGN KEY (`it_pro_codigo`) REFERENCES `tb_produto` (`pro_codigo`),
+  CONSTRAINT `fk_it_ven_cod` FOREIGN KEY (`it_ven_codigo`) REFERENCES `tb_venda` (`ven_codigo`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -64,6 +116,59 @@ CREATE TABLE `tb_itens_vendidos` (
 LOCK TABLES `tb_itens_vendidos` WRITE;
 /*!40000 ALTER TABLE `tb_itens_vendidos` DISABLE KEYS */;
 /*!40000 ALTER TABLE `tb_itens_vendidos` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tb_producao`
+--
+
+DROP TABLE IF EXISTS `tb_producao`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_producao` (
+  `prod_codigo` int NOT NULL AUTO_INCREMENT,
+  `prod_data_inicio` date NOT NULL,
+  `prod_data_fim` date NOT NULL,
+  PRIMARY KEY (`prod_codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_producao`
+--
+
+LOCK TABLES `tb_producao` WRITE;
+/*!40000 ALTER TABLE `tb_producao` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tb_producao` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tb_producao_produto`
+--
+
+DROP TABLE IF EXISTS `tb_producao_produto`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tb_producao_produto` (
+  `pp_codigo` int NOT NULL AUTO_INCREMENT,
+  `pp_prod_codigo` int NOT NULL,
+  `pp_pro_codigo` int NOT NULL,
+  `pp_quantidade` int NOT NULL,
+  PRIMARY KEY (`pp_codigo`),
+  KEY `fk_pp_prod_codigo` (`pp_prod_codigo`),
+  KEY `fk_pp_pro_codigo` (`pp_pro_codigo`),
+  CONSTRAINT `fk_pp_pro_codigo` FOREIGN KEY (`pp_pro_codigo`) REFERENCES `tb_produto` (`pro_codigo`),
+  CONSTRAINT `fk_pp_prod_codigo` FOREIGN KEY (`pp_prod_codigo`) REFERENCES `tb_producao` (`prod_codigo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tb_producao_produto`
+--
+
+LOCK TABLES `tb_producao_produto` WRITE;
+/*!40000 ALTER TABLE `tb_producao_produto` DISABLE KEYS */;
+/*!40000 ALTER TABLE `tb_producao_produto` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -151,4 +256,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-20 13:31:39
+-- Dump completed on 2026-01-23 22:28:43
