@@ -155,10 +155,10 @@ Chaves estrangeiras: `gas_ins_codigo`
 ```
 **Saída:**    
   
-    | cli_nome | total_vendido |
-    | :--| :-- |
-    | Antonio  |        500.00 |
-    | Fernanda |        700.00 |
+| cli_nome | total_vendido |
+| :-- | :-- |
+| Antonio  |        500.00 |
+| Fernanda |        700.00 |
     
  
 **Descrição:** A consulta retorna os clientes que efetuaram compras, somando o valor total vendido para cada cliente e ordenando os resultados pelo total vendido.
