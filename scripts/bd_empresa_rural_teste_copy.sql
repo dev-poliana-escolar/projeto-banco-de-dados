@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.44, for Linux (x86_64)
 --
--- Host: localhost    Database: gerenciamento2
+-- Host: localhost    Database: bd_empresa_rural_teste
 -- ------------------------------------------------------
 -- Server version	8.0.44
 
@@ -118,7 +118,7 @@ CREATE TABLE `tb_itens_vendidos` (
 
 LOCK TABLES `tb_itens_vendidos` WRITE;
 /*!40000 ALTER TABLE `tb_itens_vendidos` DISABLE KEYS */;
-INSERT INTO `tb_itens_vendidos` VALUES (1,1,10,500.00),(2,2,5,500.00);
+INSERT INTO `tb_itens_vendidos` VALUES (1,1,10,500.00),(1,3,4,200.00),(2,2,5,500.00);
 /*!40000 ALTER TABLE `tb_itens_vendidos` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -243,7 +243,7 @@ CREATE TABLE `tb_venda` (
   PRIMARY KEY (`ven_codigo`),
   KEY `ven_cli_codigo` (`ven_cli_codigo`),
   CONSTRAINT `fk_ven_cli_codigo` FOREIGN KEY (`ven_cli_codigo`) REFERENCES `tb_cliente` (`cli_codigo`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,7 +252,7 @@ CREATE TABLE `tb_venda` (
 
 LOCK TABLES `tb_venda` WRITE;
 /*!40000 ALTER TABLE `tb_venda` DISABLE KEYS */;
-INSERT INTO `tb_venda` VALUES (1,'2026-01-25',1),(2,'2026-01-26',3);
+INSERT INTO `tb_venda` VALUES (1,'2026-01-25',1),(2,'2026-01-26',3),(3,'2026-01-26',3);
 /*!40000 ALTER TABLE `tb_venda` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -265,4 +265,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-01-28 18:37:48
+-- Dump completed on 2026-01-31 15:28:29

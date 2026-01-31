@@ -112,11 +112,11 @@ INSERT INTO `tb_cliente` VALUES (1,'Antonio'),(2,'Pedro'),(3,'Fernanda');
 INSERT INTO `tb_insumo` VALUES (1,'Lenha'),(2,'Mandioca');
 INSERT INTO `tb_produto` VALUES (1,'Farinha',2,50.00),(2,'Goma',1,100.00);
 INSERT INTO `tb_producao` VALUES (1,'2026-01-25','2026-01-29');
-INSERT INTO `tb_venda` VALUES (1,'2026-01-25',1),(2,'2026-01-26',3);
+INSERT INTO `tb_venda` VALUES (1,'2026-01-25',1),(2,'2026-01-26',3),(3,'2026-01-26',3);
 
 
 
-INSERT INTO `tb_itens_vendidos` VALUES (1,1,10,500.00),(2,2,5,500.00);
+INSERT INTO `tb_itens_vendidos` VALUES (1,1,10,500.00),(1,3,4,200.00),(2,2,5,500.00);
 INSERT INTO `tb_producao_produto` VALUES (1,1,2,5000),(2,1,2,100),(3,1,1,80);
 INSERT INTO `tb_gasto_insumos` VALUES (1,2,5000,0.80,'2026-01-25',4000.00),(2,1,4000,1.00,'2026-01-25',4000.00);
 
