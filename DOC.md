@@ -154,12 +154,12 @@ Chaves estrangeiras: `gas_ins_codigo`
     -> ORDER BY total_vendido;
 ```
 **Saída:**    
-    +----------+---------------+
+  
     | cli_nome | total_vendido |
-    +----------+---------------+
+    | :--| :-- |
     | Antonio  |        500.00 |
     | Fernanda |        700.00 |
-    +----------+---------------+
+    
  
 **Descrição:** A consulta retorna os clientes que efetuaram compras, somando o valor total vendido para cada cliente e ordenando os resultados pelo total vendido.
 
@@ -173,13 +173,13 @@ Chaves estrangeiras: `gas_ins_codigo`
 ```
 
 **Saída:**
-+----------+-------------+
+
 | cli_nome | qtd_compras |
-+----------+-------------+
+| :-- | :-- |
 | Pedro    |           0 |
 | Antonio  |           1 |
 | Fernanda |           2 |
-+----------+-------------+
+
 
 **Descrição**: A consulta mostra a quantidade de compras realizadas por cada cliente que possui, ou não, vendas registradas, ordenando da menor para a maior quantidade.
 
@@ -194,12 +194,12 @@ Chaves estrangeiras: `gas_ins_codigo`
     -> ORDER BY total_produtos_vendidos;
 ```
 **Saída:**
-+----------+-------------------------+
+
 | pro_nome | total_produtos_vendidos |
-+----------+-------------------------+
+| :-- | :-- |
 | Goma     |                       5 |
 | Farinha  |                      14 |
-+----------+-------------------------+
+
 
 **Descrição**: A consulta retorna a quantidade total vendida de cada produto, somando as quantidades dos itens vendidos.
 
@@ -213,12 +213,12 @@ Chaves estrangeiras: `gas_ins_codigo`
 ```
 
 **Saída:**
-+----------+-----------------------+---------+
+
 | pro_nome | qtd_produtos_vendidos | receita |
-+----------+-----------------------+---------+
+| :-- | :-- | :-- |
 | Farinha  |                    14 |  700.00 |
 | Goma     |                     5 |  500.00 |
-+----------+-----------------------+---------+
+
 
 **Descrição:** A consulta retorna a quantidade total vendida e a receita gerada por cada produto, ordenando do produto mais vendido até o menos vendido.
 
@@ -234,12 +234,12 @@ Chaves estrangeiras: `gas_ins_codigo`
 ```
 
 **Saída:**
-+----------+---------------------+
+
 | pro_nome | qtd_total_produzida |
-+----------+---------------------+
+| :--  | :-- |
 | Goma     |                5100 |
 | Farinha  |                  80 |
-+----------+---------------------+
+
 
 **Descrição:** A consulta retorna a quantidade total produzida de cada produto, considerando os registros de produção.
 
@@ -250,11 +250,11 @@ Chaves estrangeiras: `gas_ins_codigo`
     -> FROM tb_gasto_insumos;
 ```
 **Saída:**
-+---------------------+
+
 | total_gasto_insumos |
-+---------------------+
+| :-- | 
 |             8000.00 |
-+---------------------+
+
 
 **Descrição:** A consulta calcula o valor total gasto com todos os insumos utilizados na produção.
 
@@ -269,12 +269,12 @@ Chaves estrangeiras: `gas_ins_codigo`
     -> HAVING qtd_produto>2;
 ```
 **Saída:**
-+----------+-------------+---------------+
+
 | cli_nome | qtd_produto | total_compras |
-+----------+-------------+---------------+
+| :-- | :-- | :-- |
 | Antonio  |          10 |        500.00 |
 | Fernanda |           9 |        700.00 |
-+----------+-------------+---------------+
+
 
 **Descrição:** A consulta identifica os clientes cujo total de produtos comprados é superior a 2 unidades, exibindo também o valor total gasto por eles.
 
@@ -291,13 +291,13 @@ Chaves estrangeiras: `gas_ins_codigo`
 ```
 
 **Saída:**
-+----------+--------------------+--------------------+--------------+--------------+
+
 | cli_nome | menor_preco_compra | maior_preco_compra | total_compra | media_compra |
-+----------+--------------------+--------------------+--------------+--------------+
+| :-- | :-- | :-- | :-- | :-- |
 | Antonio  |             500.00 |             500.00 |       500.00 |   500.000000 |
 | Fernanda |             200.00 |             500.00 |       700.00 |   350.000000 |
 | Pedro    |               NULL |               NULL |         NULL |         NULL |
-+----------+--------------------+--------------------+--------------+--------------+
+
 
 **Descrição:** A consulta realiza uma análise estatística das compras de cada cliente, apresentando o menor valor, maior valor, total gasto e média de valor das compras realizadas.
 
