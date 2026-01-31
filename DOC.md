@@ -7,6 +7,7 @@ Este projeto de banco de dados tem como tema o gerenciamento de uma empresa fami
 1. [Contexto do banco de dados](#1-contexto-do-banco-de-dados)
 2. [Modelo Logico](#2-modelo-lógico-do-banco-de-dados)
 3. [Dicionário de dados](#3-dicionário-de-dados)
+4. [Consultas SQL](#4-consultas-sql)
 
 --- 
 
@@ -67,7 +68,7 @@ Chave Primária Composta: (`it_pro_codigo`, `it_ven_codigo`)
 | it_pro_codigo  | int           | NO   | PRI | NULL    |       | Chave estrangeira (código do produto) correspondente ao produto a ser vendido
 | it_ven_codigo  | int           | NO   | PRI | NULL    |       | Chave estrangeira (código da venda) correspondente a venda a ser realizada
 | it_quantidade  | int           | NO   |     | NULL    |       | Informar a quantidade de produto.
-| it_valor_total | decimal(10,2) | NO   |     | NULL    |       | 
+| it_valor_total | decimal(10,2) | NO   |     | NULL    |       | Informar valor total da venda
 
 
 #### tb_venda
@@ -134,8 +135,169 @@ Chaves estrangeiras: `gas_ins_codigo`
 | Campo       | Tipo        | Null | Key | Default | Extra          | Descrição
 | :--         | :--         | :--  | :-- | :--      | :-- | :--
 | gas_codigo         | int           | NO   | PRI | NULL    | auto_increment | Chave primária
-| gas_ins_codigo     | int           | NO   | MUL | NULL    |                | Chave estrangeira (codigo do insumo) correspondente ao insumo 
+| gas_ins_codigo     | int           | NO   | MUL | NULL    |                | Chave estrangeira |(codigo do insumo) correspondente ao insumo 
 | gas_qtd_insumo     | int           | NO   |     | NULL    |                | Informar a quantidade de insumo
 | gas_preco_unitario | decimal(10,2) | NO   |     | NULL    |                | Informar o preço unitario do insumo
 | gas_data           | date          | NO   |     | NULL    |                | Informar a data da aquisição do insumo
-| gas_valor_total    | decimal(10,2) | NO   |     | NULL    |                |
+| gas_valor_total    | decimal(10,2) | NO   |     | NULL    |                | Informar valor total da despesa
+
+## 4. Consultas SQL
+
+1. Quais clientes realizaram compras e qual o total comprado?
+
+```sql
+    SELECT cli_nome, SUM(it_valor_total) AS total_vendido
+    -> FROM tb_cliente AS cli 
+        -> INNER JOIN tb_venda AS ven ON cli.cli_codigo=ven.ven_cli_codigo
+        -> INNER JOIN tb_itens_vendidos AS it ON ven.ven_codigo=it.it_ven_codigo
+    -> GROUP BY cli.cli_nome 
+    -> ORDER BY total_vendido;
+```
+**Saída:**    
+    +----------+---------------+
+    | cli_nome | total_vendido |
+    +----------+---------------+
+    | Antonio  |        500.00 |
+    | Fernanda |        700.00 |
+    +----------+---------------+
+ 
+**Descrição:** A consulta retorna os clientes que efetuaram compras, somando o valor total vendido para cada cliente e ordenando os resultados pelo total vendido.
+
+2. Quantas compras cada cliente realizou na empresa?
+
+```sql
+     SELECT cli_nome, COUNT(ven_codigo) AS qtd_compras 
+    -> FROM tb_cliente AS cli 
+    -> LEFT JOIN tb_venda AS ven ON cli.cli_codigo=ven.ven_cli_codigo 
+    -> GROUP BY cli.cli_nome ORDER BY qtd_compras ASC;
+```
+
+**Saída:**
++----------+-------------+
+| cli_nome | qtd_compras |
++----------+-------------+
+| Pedro    |           0 |
+| Antonio  |           1 |
+| Fernanda |           2 |
++----------+-------------+
+
+**Descrição**: A consulta mostra a quantidade de compras realizadas por cada cliente que possui, ou não, vendas registradas, ordenando da menor para a maior quantidade.
+
+
+3. Quantos produtos foram vendidos pela empresa?
+
+```sql 
+    SELECT pro_nome, SUM(it_quantidade) AS total_produtos_vendidos
+    -> FROM tb_produto AS pro
+    -> INNER JOIN tb_itens_vendidos AS item ON pro.pro_codigo=item.it_pro_codigo
+    -> GROUP BY pro.pro_nome
+    -> ORDER BY total_produtos_vendidos;
+```
+**Saída:**
++----------+-------------------------+
+| pro_nome | total_produtos_vendidos |
++----------+-------------------------+
+| Goma     |                       5 |
+| Farinha  |                      14 |
++----------+-------------------------+
+
+**Descrição**: A consulta retorna a quantidade total vendida de cada produto, somando as quantidades dos itens vendidos.
+
+4. Qual foi a receita total gerada por cada produto vendido?
+
+```sql
+    SELECT pro_nome, SUM(it_quantidade) AS qtd_produtos_vendidos, SUM(it_valor_total) AS receita 
+    -> FROM tb_produto AS pro  
+    -> LEFT JOIN tb_itens_vendidos AS item ON pro.pro_codigo=item.it_pro_codigo 
+    -> GROUP BY pro.pro_nome ORDER BY receita DESC;
+```
+
+**Saída:**
++----------+-----------------------+---------+
+| pro_nome | qtd_produtos_vendidos | receita |
++----------+-----------------------+---------+
+| Farinha  |                    14 |  700.00 |
+| Goma     |                     5 |  500.00 |
++----------+-----------------------+---------+
+
+**Descrição:** A consulta retorna a quantidade total vendida e a receita gerada por cada produto, ordenando do produto mais vendido até o menos vendido.
+
+
+5. Qual a quantidade total produzida de cada produto?
+
+```sql
+    SELECT pro_nome, SUM(pp_quantidade) AS qtd_total_produzida 
+    -> FROM tb_produto AS pro
+    -> LEFT JOIN tb_producao_produto AS pro_produzido ON pro.pro_codigo=pro_produzido.pp_pro_codigo
+    -> GROUP BY pro.pro_nome 
+    -> ORDER BY qtd_total_produzida DESC;
+```
+
+**Saída:**
++----------+---------------------+
+| pro_nome | qtd_total_produzida |
++----------+---------------------+
+| Goma     |                5100 |
+| Farinha  |                  80 |
++----------+---------------------+
+
+**Descrição:** A consulta retorna a quantidade total produzida de cada produto, considerando os registros de produção.
+
+6. Qual foi o valor total gasto com insumos pela empresa?
+
+```sql
+     SELECT SUM(gas_valor_total) AS total_gasto_insumos
+    -> FROM tb_gasto_insumos;
+```
+**Saída:**
++---------------------+
+| total_gasto_insumos |
++---------------------+
+|             8000.00 |
++---------------------+
+
+**Descrição:** A consulta calcula o valor total gasto com todos os insumos utilizados na produção.
+
+7. Quais clientes compraram mais de 2 unidades de produtos no total?
+
+```sql
+     SELECT cli_nome, SUM(it_quantidade) AS qtd_produto, SUM(it_valor_total) AS total_compras     
+    -> FROM tb_cliente AS cli     
+    -> LEFT JOIN tb_venda AS ven ON cli.cli_codigo=ven.ven_cli_codigo    
+    -> LEFT JOIN tb_itens_vendidos AS it ON ven.ven_codigo=it.it_ven_codigo 
+    -> GROUP BY cli.cli_nome 
+    -> HAVING qtd_produto>2;
+```
+**Saída:**
++----------+-------------+---------------+
+| cli_nome | qtd_produto | total_compras |
++----------+-------------+---------------+
+| Antonio  |          10 |        500.00 |
+| Fernanda |           9 |        700.00 |
++----------+-------------+---------------+
+
+**Descrição:** A consulta identifica os clientes cujo total de produtos comprados é superior a 2 unidades, exibindo também o valor total gasto por eles.
+
+8. Qual o menor, maior, total e valor médio das compras realizadas por cada cliente?
+
+
+```sql 
+    SELECT cli_nome, MIN(it_valor_total) AS menor_preco_compra, MAX(it_valor_total) AS maior_preco_compra, SUM(it_valor_total) AS total_compra, AVG(it_valor_total) AS media_compra  
+    -> FROM tb_cliente AS cli 
+    -> LEFT JOIN tb_venda AS ven ON cli.cli_codigo=ven.ven_cli_codigo 
+    -> LEFT JOIN tb_itens_vendidos AS it ON ven.ven_codigo=it.it_ven_codigo 
+    -> GROUP BY cli.cli_nome 
+    -> ORDER BY maior_preco_compra DESC;
+```
+
+**Saída:**
++----------+--------------------+--------------------+--------------+--------------+
+| cli_nome | menor_preco_compra | maior_preco_compra | total_compra | media_compra |
++----------+--------------------+--------------------+--------------+--------------+
+| Antonio  |             500.00 |             500.00 |       500.00 |   500.000000 |
+| Fernanda |             200.00 |             500.00 |       700.00 |   350.000000 |
+| Pedro    |               NULL |               NULL |         NULL |         NULL |
++----------+--------------------+--------------------+--------------+--------------+
+
+**Descrição:** A consulta realiza uma análise estatística das compras de cada cliente, apresentando o menor valor, maior valor, total gasto e média de valor das compras realizadas.
+

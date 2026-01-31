@@ -1,7 +1,8 @@
-# projeto-banco-de-dados
+# Projeto final de Banco de Dados
 
 > Nota: para utilizar o Docker sem instalá-lo em sua máquina, basta usar o codespaces do Github. Configure seu usuário no terminal e comece sua jornada.
 
+[Documentação do projeto](DOC.md)
 
 ### 1. Instalação Linux _vs_ Windows
 
