@@ -1,7 +1,8 @@
-# projeto-banco-de-dados
+# Projeto final de Banco de Dados
 
 > Nota: para utilizar o Docker sem instalá-lo em sua máquina, basta usar o codespaces do Github. Configure seu usuário no terminal e comece sua jornada.
 
+[Documentação do projeto](DOC.md)
 
 ### 1. Instalação Linux _vs_ Windows
 
@@ -41,7 +42,7 @@
 4. Gerar  ou atualizar um **arquivo** .sql (backup com mysqldump):
 
     ```bash
-    sudo docker exec projeto mysqldump -u root -p nome_database > nome_database.sql
+    sudo docker exec projeto mysqldump -u root -p1234 nome_database > nome_database.sql
     ``` 
 
 5. **Importar** um arquivo .sql para dentro do container:
@@ -49,14 +50,14 @@
     > Se ele estiver dentro de uma pasta, entre nela antes de fazer o comando a seguir:
 
     ```bash
-    sudo docker exec -i projeto mysql -u root -p nome_database < arquivo.sql
+    sudo docker exec -i projeto mysql -u root -p1234 nome_database < arquivo.sql
     ``` 
 
 6. Salvar o historico de forma dinâmica em cada sessão:
 
     Utiliza-se comando tee:
     ```bash
-    tee /tmp/logs/nome_da_sessao.log
+    tee ./logs/nome_da_sessao.log
     ``` 
 
     Encerrar gravação:
